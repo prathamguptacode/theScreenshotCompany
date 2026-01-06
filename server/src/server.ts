@@ -5,11 +5,13 @@ import cors from 'cors';
 import type { clientResponse } from './utils/myTypes.ts';
 import mongoose from 'mongoose';
 import userData from './routes/userRoute.js'
+import cookieParser from 'cookie-parser'
 
 envSetup.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 mongoose
   .connect('mongodb://localhost/thescreenshotcompany')

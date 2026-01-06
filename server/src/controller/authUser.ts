@@ -1,9 +1,11 @@
 import type { Request, Response } from 'express';
 import type { clientResponse } from '../utils/myTypes.js';
 import user from '../model/userSchema.js';
+import jwt from 'jsonwebtoken';
 
 async function authUser(req: Request, res: Response) {
-    const key: String | undefined = req.body?.key;
+    const key: String = req.body?.key;
+    const signCan: boolean = req.body?.signCan;
 
     if (!key) {
         const clientRes: clientResponse = {
@@ -24,6 +26,18 @@ async function authUser(req: Request, res: Response) {
             mission: 'success',
             documents: myUser.documents,
         };
+        if (signCan) {
+            //sending cookies to stay signed in
+            if (process.env.TOKENKEY) {
+                const token = jwt.sign({ user: key }, process.env.TOKENKEY);
+                res.cookie('userToken', token, { httpOnly: true });
+            } else {
+                console.error('something went wrong jwt keys not found');
+            }
+            //for checking in frontend for design changes
+            const userData = true;
+            res.cookie('userPermit', userData);
+        }
         return res.json(clientRes);
     }
 

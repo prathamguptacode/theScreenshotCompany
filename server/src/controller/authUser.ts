@@ -20,11 +20,13 @@ async function authUser(req: Request, res: Response) {
     if (myUser) {
         interface myResponse extends clientResponse {
             documents: string[];
+            docNames: string[];
         }
         const clientRes: myResponse = {
             message: `welcome user ${myUser.key}`,
             mission: 'success',
             documents: myUser.documents,
+            docNames: myUser.docName,
         };
         if (signCan) {
             //sending cookies to stay signed in

@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   documents: [String],
+  docName: [String]
 });
 
 export default mongoose.model('user', userSchema);

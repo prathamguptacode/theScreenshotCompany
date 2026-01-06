@@ -1,13 +1,12 @@
+import 'dotenv/config';
 import express from 'express';
 import type { Request, Response } from 'express';
-import envSetup from 'dotenv';
 import cors from 'cors';
 import type { clientResponse } from './utils/myTypes.ts';
 import mongoose from 'mongoose';
 import userData from './routes/userRoute.js'
 import cookieParser from 'cookie-parser'
 
-envSetup.config();
 const app = express();
 app.use(express.json());
 app.use(cors());

@@ -2,8 +2,9 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import envSetup from 'dotenv';
 import cors from 'cors';
-import type { clientResponse } from './utils/myTypes.js';
+import type { clientResponse } from './utils/myTypes.ts';
 import mongoose from 'mongoose';
+import userData from './routes/userRoute.js'
 
 envSetup.config();
 const app = express();
@@ -22,6 +23,8 @@ app.get('/', (req: Request, res: Response) => {
   };
   res.json(clientRes);
 });
+
+app.use(userData)
 
 const port = process.env.PORT;
 

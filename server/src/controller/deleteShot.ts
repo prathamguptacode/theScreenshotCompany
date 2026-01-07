@@ -17,7 +17,7 @@ async function deleteShot(req: Request, res: Response) {
         };
         return res.json(cleintRes);
     }
-    
+
     if (!name) {
         const cleintRes: clientResponse = {
             message: 'deleting name not found',
@@ -77,7 +77,7 @@ async function deleteShot(req: Request, res: Response) {
         };
         await userDB.updateOne(
             { key: user },
-            { $pop: { documents: url, docName: name } }
+            { $pull: { documents: url, docName: name } }
         );
         // we also have to del the use name but
         return res.json(cleintRes);

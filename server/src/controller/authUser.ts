@@ -48,7 +48,9 @@ async function authUser(req: Request, res: Response) {
             authToken: string;
         }
         if (process.env.ACTOKENKEY) {
-            const userData = jwt.sign({ user: key }, process.env.ACTOKENKEY);
+            const userData = jwt.sign({ user: key }, process.env.ACTOKENKEY, {
+                expiresIn: '0.5h',
+            });
             const clientRes: myResponse = {
                 message: `welcome new user ${newUser.key}`,
                 mission: 'success',
@@ -87,7 +89,9 @@ async function authUser(req: Request, res: Response) {
             }
         }
         if (process.env.ACTOKENKEY) {
-            const userData = jwt.sign({ user: key }, process.env.ACTOKENKEY);
+            const userData = jwt.sign({ user: key }, process.env.ACTOKENKEY, {
+                expiresIn: '0.5h',
+            });
             const clientRes: myResponse = {
                 message: `welcome user ${myUser.key}`,
                 mission: 'success',

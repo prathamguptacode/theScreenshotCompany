@@ -1,0 +1,36 @@
+.parent{
+  margin: auto;
+  max-width: 900px;
+}
+
+
+@media (max-width: 930px) {
+  /* … */
+  .parent{
+    max-width: 740px;
+  }
+}
+@media (max-width: 785px) {
+  /* … */
+  .parent{
+    max-width: 600px;
+  }
+}
+@media (max-width: 630px) {
+  /* … */
+  .parent{
+    max-width: 500px;
+  }
+}
+@media (max-width: 530px) {
+  /* … */
+  .parent{
+    max-width: 400px;
+  }
+}
+@media (max-width: 430px) {
+  /* … */
+  .parent{
+    padding: 0 12px ;
+  }
+}

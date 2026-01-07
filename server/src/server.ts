@@ -4,7 +4,7 @@ import type { Request, Response } from 'express';
 import cors from 'cors';
 import type { clientResponse } from './utils/myTypes.ts';
 import mongoose from 'mongoose';
-import userData from './routes/userRoute.js'
+import userRoute from './routes/userRoute.js'
 import cookieParser from 'cookie-parser'
 
 const app = express();
@@ -25,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
   res.json(clientRes);
 });
 
-app.use(userData)
+app.use(userRoute)
 
 const port = process.env.PORT;
 

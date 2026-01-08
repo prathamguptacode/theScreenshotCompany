@@ -3,6 +3,7 @@ import mystyle from './Home.module.css';
 import { LuKey } from 'react-icons/lu';
 import { FaArrowRight } from 'react-icons/fa';
 import { BsStars } from 'react-icons/bs';
+import toast from 'react-hot-toast';
 
 function Home() {
     const [sign, setSign] = useState(false);
@@ -19,6 +20,17 @@ function Home() {
             );
         }
         key.current.value = result;
+    }
+
+    function handleClick() {
+        if (!key.current.value) {
+            toast.error('please enter a key to continue 🔑');
+            key.current.classList.add(mystyle.inputError);
+            key.current.classList.add(mystyle.shake);
+        } else {
+            key.current.classList.remove(mystyle.inputError);
+            key.current.classList.remove(mystyle.shake);
+        }
     }
 
     return (
@@ -43,7 +55,7 @@ function Home() {
                     ref={key}
                 />
                 <div className={mystyle.btnbox}>
-                    <button className={mystyle.accessBtn}>
+                    <button className={mystyle.accessBtn} onClick={handleClick}>
                         Access Storage
                         <FaArrowRight size={12} className={mystyle.btnarrow} />
                     </button>

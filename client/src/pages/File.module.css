@@ -90,6 +90,10 @@
     border: 2px dashed rgba(0, 120, 206, 0.4);
 }
 
+.onDrag{
+    background-color: rgba(234, 244, 251, 0.25);
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
     height: 60px;
@@ -276,7 +280,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    cursor: default
+    cursor: default;
 }
 
 /* File size */
@@ -367,66 +371,23 @@
     outline-offset: 2px;
 }
 
-/* .primarybtn {
-    background: #0070f3;
-    color: white;
-    padding: 10px 24px;
-    border-radius: 6px;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.primarybtn:hover {
-    background: #0061d5;
-}
-
-.file-list {
+.filebox{
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    gap: 12px;
+    padding: 32px;
 }
 
-.file-item {
-    background: #fff;
-    border: 1px solid #e2e8f0;
+.fileicon{
+    background-color: hsl(204, 10%, 95%);
+    padding: 16px;
     border-radius: 12px;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: border-color 0.2s;
 }
 
-.file-item:hover {
-    border-color: #cbd5e1;
-}
-
-.file-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.file-name {
+.emptycon{
+    font-size: 14px;
+    color: oklch(0.52 0.02 240);
     font-weight: 500;
-    font-size: 15px;
+    padding: 12px 0;
 }
-
-.file-size {
-    color: #666;
-    font-size: 13px;
-    margin-top: 4px;
-}
-
-.actions {
-    display: flex;
-    gap: 16px;
-    color: #666;
-}
-
-.actions svg:hover {
-    color: #000;
-    cursor: pointer;
-} */

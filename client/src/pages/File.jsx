@@ -58,12 +58,14 @@ function File() {
                         authorization: `bearer ${user.authToken}`,
                     },
                 });
-                console.log(res);
                 const info = res.data.info;
                 setUploadFile((prev) => [
                     { name: info.docName, url: info.documents },
                     ...prev,
                 ]);
+                toast.success('Files uploaded successfully', {
+                    description: "You'll need your key to access your files.",
+                });
             } catch (error) {
                 if (error.response.status == 401) {
                     toast.error('Upload interrupted', {
@@ -98,6 +100,48 @@ function File() {
         setUploadFile((prev) => prev.filter((e) => name !== e.name));
     }
 
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.target.classList.toggle(mystyle.onDrag);
+    }
+
+    async function handleDrop(e) {
+        e.preventDefault();
+        console.log(e.dataTransfer.files);
+        if (e.dataTransfer.files) {
+            console.log(e.dataTransfer.files[0]);
+            setUploadSt(1);
+            const formData = new FormData();
+            formData.append('file', e.dataTransfer.files[0]);
+            try {
+                const res = await api.post('/upload', formData, {
+                    headers: {
+                        authorization: `bearer ${user.authToken}`,
+                    },
+                });
+                const info = res.data.info;
+                setUploadFile((prev) => [
+                    { name: info.docName, url: info.documents },
+                    ...prev,
+                ]);
+                toast.success('Files uploaded successfully', {
+                    description: "You'll need your key to access your files.",
+                });
+            } catch (error) {
+                if (error.response.status == 401) {
+                    toast.error('Upload interrupted', {
+                        description:
+                            'Upload didn’t complete.Try again in a moment.',
+                    });
+                    navigate('/');
+                } else {
+                    toast.error('something went wrong, please try again later');
+                }
+            }
+            setUploadSt(0);
+        }
+    }
+
     return (
         <div>
             <div className={mystyle.filenav}>
@@ -113,7 +157,11 @@ function File() {
                 </div>
             </div>
 
-            <div className={mystyle.uploadBox}>
+            <div
+                className={mystyle.uploadBox}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+            >
                 {uploadSt ? (
                     <div className={mystyle.loader}></div>
                 ) : (
@@ -148,10 +196,10 @@ function File() {
                 )}
             </div>
 
-            {user.docNames && user.docNames.length == 0 ? (
+            {uploadFile.length == 0 ? (
                 <div className={mystyle.filebox}>
                     <div className={mystyle.fileicon}>
-                        <LuFolderOpen />
+                        <LuFolderOpen size={32} color="hsl(204, 10%, 75%)" />
                     </div>
                     <div className={mystyle.emptycon}>
                         No files yet. Upload your first file to get started.
@@ -231,7 +279,9 @@ function File() {
                                                 }
                                             }}
                                         >
-                                            <RiDeleteBin6Line className={mystyle.delicon} />
+                                            <RiDeleteBin6Line
+                                                className={mystyle.delicon}
+                                            />
                                         </button>
                                     </div>
                                 </div>

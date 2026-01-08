@@ -63,7 +63,11 @@ async function authUser(req, res) {
             //sending cookies to stay signed in
             if (process.env.TOKENKEY) {
                 const token = jwt.sign({ user: key }, process.env.TOKENKEY);
-                res.cookie('userToken', token, { httpOnly: true });
+                res.cookie('userToken', token, {
+                    httpOnly: true,
+                    secure: true, // Only sent over HTTPS
+                    sameSite: 'none',
+                });
             } else {
                 console.error('something went wrong jwt keys not found');
             }

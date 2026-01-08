@@ -1,0 +1,1 @@
+{"version":3,"file":"cloudinaryOptions.js","sourceRoot":"","sources":["../../src/utils/cloudinaryOptions.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,GAAqB;IAC9B,YAAY,EAAE,IAAI;IAClB,eAAe,EAAE,KAAK;IACtB,SAAS,EAAE,IAAI;IACf,MAAM,EAAE,sBAAsB;IAC9B,OAAO,EAAC,UAAU;CACrB,CAAC;AACF,eAAe,OAAO,CAAC"}

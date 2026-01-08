@@ -109,7 +109,7 @@ function Home() {
                 <div className={mystyle.logobox}>
                     <LuKey color="#0079CE" size={36} />
                 </div>
-                <div className={mystyle.logoTitle}>Keyless Cloud</div>
+                <div className={mystyle.logoTitle}>Screenshot Company</div>
                 <div className={mystyle.logoContent}>
                     Access your files anywhere with just a key. No sign-up
                     required.

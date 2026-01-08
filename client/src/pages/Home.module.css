@@ -197,7 +197,6 @@
 
 /* error handling css by ai */
 .inputError {
-
     border: 1px solid rgb(239, 68, 68);
     border-radius: 12px;
 
@@ -216,13 +215,23 @@
 }
 
 .inputError:focus {
-  outline: none;
-  border-color: rgb(239, 68, 68);
-  color: #000;
+    outline: none;
+    border-color: rgb(239, 68, 68);
+    color: #000;
 
-  box-shadow:
-    0 0 0 1px rgba(239, 68, 68, 0.8),
-    0 0 0 4px rgba(239, 68, 68, 0.18);
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.8),
+        0 0 0 4px rgba(239, 68, 68, 0.18);
 }
 
-
+@media (max-width: 625px) {
+    /* … */
+    .logoTitle {
+        line-height: 1.2;
+    }
+}
+@media (max-width: 430px) {
+    /* … */
+    .logoTitle {
+        font-size: 40px;
+    }
+}

@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser'
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','http://172.20.10.7:5173'],
   credentials: true
 }));
 app.use(cookieParser());
@@ -27,7 +27,7 @@ else{
 
 app.get('/', (req: Request, res: Response) => {
   const clientRes: clientResponse = {
-    message: 'hello world welcome to theScreenshotCompany',
+    message: 'hello world welcome to Screenshot Company',
     mission: 'success',
   };
   res.json(clientRes);

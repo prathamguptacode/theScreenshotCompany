@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser'
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:5173','http://172.20.10.7:5173'],
+  origin: ['http://localhost:5173','http://172.20.10.7:5173','https://screenshotcompany.onrender.com'],
   credentials: true
 }));
 app.use(cookieParser());

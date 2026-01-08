@@ -47,7 +47,7 @@ async function authUser(req, res) {
                     res.cookie('userToken', token, {
                         httpOnly: true,
                         secure: true, // Only sent over HTTPS
-                        sameSite: 'None',
+                        sameSite: 'none',
                     });
                 } else {
                     console.error('something went wrong jwt keys not found');

@@ -17,6 +17,6 @@ router.get('/signout',(req: Request,res: Response)=>{
     res.json(clientRes)
 })
 
-router.delete('/del',deleteShot)
+router.post('/del',deleteShot)
 
 export default router;

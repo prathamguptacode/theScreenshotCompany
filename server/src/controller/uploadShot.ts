@@ -27,21 +27,21 @@ const uploadCon = async (req: Request, res: Response) => {
                     message: 'token corrupted',
                     mission: 'failed',
                 };
-                return res.status(400).json(cleintRes);
+                return res.status(401).json(cleintRes);
             }
         } else {
             const cleintRes: clientResponse = {
                 message: 'invalid token style',
                 mission: 'failed',
             };
-            return res.json(cleintRes);
+            return res.status(401).json(cleintRes);
         }
     } else {
         const cleintRes: clientResponse = {
             message: 'please signin to uploads (token not found)',
             mission: 'failed',
         };
-        return res.json(cleintRes);
+        return res.status(401).json(cleintRes);
     }
 
     if (req.file?.path) {
@@ -63,7 +63,7 @@ const uploadCon = async (req: Request, res: Response) => {
             interface uploadResponse extends clientResponse {
                 info: {
                     docName: string;
-                    document: string;
+                    documents: string;
                 };
             }
             const cleintRes: uploadResponse = {
@@ -71,7 +71,7 @@ const uploadCon = async (req: Request, res: Response) => {
                 mission: 'success',
                 info: {
                     docName: imgData.original_filename,
-                    document: imgData.secure_url,
+                    documents: imgData.secure_url,
                 },
             };
             fs.unlink(req.file?.path, (err) => {
@@ -83,7 +83,7 @@ const uploadCon = async (req: Request, res: Response) => {
         } catch (error) {
             console.log(error);
             const cleintRes: clientResponse = {
-                message: 'failed to upload the files',
+                message: 'failed to upload the files...',
                 mission: 'failed',
             };
             return res.json(cleintRes);

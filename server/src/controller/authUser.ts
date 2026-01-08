@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import type { JwtPayload } from 'jsonwebtoken';
 
 async function authUser(req: Request, res: Response) {
-    let key: String = req.body?.key;
+    let key: string = req.body?.key;
     const signCan: boolean = req.body?.signCan;
     const tokenC = req.cookies?.userToken;
 
@@ -31,7 +31,7 @@ async function authUser(req: Request, res: Response) {
             message: 'key not found',
             mission: 'failed',
         };
-        return res.json(clientRes);
+        return res.status(403).json(clientRes);
     }
 
     const myUser = await user.findOne({ key });
@@ -46,6 +46,7 @@ async function authUser(req: Request, res: Response) {
             documents: string[];
             docNames: string[];
             authToken: string;
+            key: string;
         }
         if (process.env.ACTOKENKEY) {
             const userData = jwt.sign({ user: key }, process.env.ACTOKENKEY, {
@@ -57,6 +58,7 @@ async function authUser(req: Request, res: Response) {
                 documents: newUser.documents,
                 docNames: newUser.docName,
                 authToken: userData,
+                key: key,
             };
             if (signCan) {
                 //sending cookies to stay signed in
@@ -78,6 +80,7 @@ async function authUser(req: Request, res: Response) {
             documents: string[];
             docNames: string[];
             authToken: string;
+            key: string;
         }
         if (signCan) {
             //sending cookies to stay signed in
@@ -98,6 +101,7 @@ async function authUser(req: Request, res: Response) {
                 documents: myUser.documents,
                 docNames: myUser.docName,
                 authToken: userData,
+                key: key,
             };
             return res.json(clientRes);
         } else {

@@ -41,6 +41,8 @@ function File() {
         }
     }, [user]);
 
+    console.log(uploadFile);
+
     async function changefile(e) {
         if (e.target.files) {
             console.log(e.target.files[0]);
@@ -54,6 +56,11 @@ function File() {
                     },
                 });
                 console.log(res);
+                const info = res.data.info;
+                setUploadFile((prev) => [
+                    { name: info.docName, url: info.documents },
+                    ...prev,
+                ]);
             } catch (error) {
                 if (error.response.status == 401) {
                     toast.error('Upload interrupted', {
@@ -71,17 +78,21 @@ function File() {
 
     async function signout() {
         try {
-            const res= api.get('/signout')
-            toast.promise(res,{
+            const res = api.get('/signout');
+            toast.promise(res, {
                 loading: 'Please wait a moment.',
                 success: 'Logged out successfully',
-                error: 'Something went wrong'
-            })
-            userCon.setUser(0)
-            navigate('/')
+                error: 'Something went wrong',
+            });
+            userCon.setUser(0);
+            navigate('/');
         } catch (error) {
-            toast.error('Something went wrong')
+            toast.error('Something went wrong');
         }
+    }
+
+    function delCard(name) {
+        setUploadFile((prev) => prev.filter((e) => name !== e.name));
     }
 
     return (
@@ -134,7 +145,7 @@ function File() {
             ) : (
                 <div className={mystyle.filesShowbox}>
                     <div className={mystyle.filenum}>
-                        {user.docNames && user.docNames.length} file
+                        {uploadFile.length} file
                     </div>
                     <div className={mystyle.cardbox}>
                         {uploadFile.map((element) => {
@@ -147,9 +158,25 @@ function File() {
                                         {element.name}
                                     </div>
                                     <div className={mystyle.downiconbox}>
-                                        <a href={element.url} target="_blank">
+                                        <button
+                                            onClick={() => {
+                                                const downUrl =
+                                                    element.url.replace(
+                                                        '/upload/',
+                                                        '/upload/fl_attachment/'
+                                                    );
+                                                toast.success(
+                                                    'Please wait, your download will start shortly…',
+                                                    { duration: 1200 }
+                                                );
+                                                setTimeout(() => {
+                                                    window.location.href =
+                                                        downUrl;
+                                                }, 300);
+                                            }}
+                                        >
                                             <BsDownload />
-                                        </a>
+                                        </button>
                                     </div>
                                     <div className={mystyle.deleteiconbox}>
                                         <button
@@ -173,6 +200,7 @@ function File() {
                                                         description:
                                                             'We’re removing the image now.',
                                                     });
+                                                    delCard(element.name);
                                                 } catch (error) {
                                                     toast.error(
                                                         'Something went wrong'

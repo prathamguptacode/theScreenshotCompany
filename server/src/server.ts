@@ -15,10 +15,15 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
-mongoose
-  .connect('mongodb://localhost/thescreenshotcompany')
-  .then(() => console.log('connected to db'))
-  .catch(() => console.error('cannot connect to the db'));
+if(process.env.DATABASE_URL){
+  mongoose
+    .connect(process.env.DATABASE_URL)
+    .then(() => console.log('connected to db'))
+    .catch(() => console.error('cannot connect to the db'));
+}
+else{
+  console.error('db url not found')
+}
 
 app.get('/', (req: Request, res: Response) => {
   const clientRes: clientResponse = {

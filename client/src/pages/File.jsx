@@ -107,7 +107,6 @@ function File() {
 
     async function handleDrop(e) {
         e.preventDefault();
-        console.log(e.dataTransfer.files);
         if (e.dataTransfer.files) {
             console.log(e.dataTransfer.files[0]);
             setUploadSt(1);

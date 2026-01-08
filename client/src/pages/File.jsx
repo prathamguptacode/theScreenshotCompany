@@ -23,7 +23,7 @@ function File() {
 
     useEffect(() => {
         if (userCon.user == 0) {
-            navigate('https://screenshotcompany.onrender.com/'); // change this later this not not good
+            navigate('/'); // change this later this not not good
         } else {
             setUser(userCon.user.serverData);
         }

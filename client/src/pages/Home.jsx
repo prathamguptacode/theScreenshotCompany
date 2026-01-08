@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mystyle from './Home.module.css';
 import { LuKey } from 'react-icons/lu';
 import { FaArrowRight } from 'react-icons/fa';
 import { BsStars } from 'react-icons/bs';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
+import api from '../api/axios.jsx';
+import { MdError } from "react-icons/md";
 
 function Home() {
     const [sign, setSign] = useState(false);
@@ -22,16 +24,71 @@ function Home() {
         key.current.value = result;
     }
 
-    function handleClick() {
+    async function handleClick() {
+        const val = key.current.value;
         if (!key.current.value) {
-            toast.error('please enter a key to continue 🔑');
+            toast.error('Missing key 🔑', {
+                description: 'We couldn’t proceed without an access key.',
+                // icon: <MdError color='red' size={100} />
+            });
             key.current.classList.add(mystyle.inputError);
             key.current.classList.add(mystyle.shake);
         } else {
             key.current.classList.remove(mystyle.inputError);
             key.current.classList.remove(mystyle.shake);
+
+            const body = {
+                key: val,
+                signCan: sign,
+            };
+            const res = await api.post('/user', body);
+            console.log(res);
         }
     }
+
+    useEffect(() => {
+        console.clear();
+        console.log(
+            '%cSTOP!',
+            `
+  color: #ef4444;
+  font-size: 32px;
+  font-weight: 800;
+  `
+        );
+        console.log(
+            '%cIf someone asked you to paste code here, it is probably a scam.\n' +
+                'Doing so can give attackers access to your account or data.',
+            `
+  color: #f8e871ff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  `
+        );
+        console.log(
+            '%cIf you understand what you’re doing, carry on.\nOtherwise — close this tab.',
+            `
+  color: #9ca3af;
+  font-size: 14px;
+  `
+        );
+
+        (async () => {
+            const res = await api.get('/');
+            const style = 'font-size: 28px; font-weight: 700;';
+            console.log(`%c${res.data.message}`, style);
+            const stylePg = 'font-size: 20px; font-weight: 500;';
+            console.log(
+                `%cthis company is made by Pratham Gupta with love`,
+                stylePg
+            );
+
+            console.log(res);
+            const resApi = await api.post('/user');
+            console.log(resApi);
+        })();
+    }, []);
 
     return (
         <div>

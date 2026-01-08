@@ -1,15 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import mystyle from './Home.module.css';
 import { LuKey } from 'react-icons/lu';
 import { FaArrowRight } from 'react-icons/fa';
 import { BsStars } from 'react-icons/bs';
 import { toast } from 'sonner';
 import api from '../api/axios.jsx';
-import { MdError } from "react-icons/md";
+import { MdError } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/userContext.jsx';
 
 function Home() {
     const [sign, setSign] = useState(false);
     const key = useRef();
+    const navigate = useNavigate();
+    const userCon=useContext(UserContext)
+
 
     function handleGen() {
         const length = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
@@ -43,6 +48,10 @@ function Home() {
             };
             const res = await api.post('/user', body);
             console.log(res);
+            if (res.status == 200) {
+                userCon.setUser({serverData: res.data})
+                navigate('/files');
+            }
         }
     }
 
@@ -87,6 +96,10 @@ function Home() {
             console.log(res);
             const resApi = await api.post('/user');
             console.log(resApi);
+            if (resApi.status == 200) {
+                userCon.setUser({serverData: resApi.data})
+                navigate('/files');
+            }
         })();
     }, []);
 

@@ -16,6 +16,7 @@ function File() {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const [uploadSt, setUploadSt] = useState(0);
+    const [uploadFile, setUploadFile] = useState([]);
 
     useEffect(() => {
         if (userCon.user == 0) {
@@ -24,6 +25,21 @@ function File() {
             setUser(userCon.user.serverData);
         }
     }, []);
+
+    useEffect(() => {
+        setUploadFile([]);
+        if (user.docNames) {
+            const name = user.docNames;
+            const url = user.documents;
+            const len = name.length - 1;
+            for (let index = len; index >= 0; index--) {
+                setUploadFile((prev) => [
+                    ...prev,
+                    { name: name[index], url: url[index] },
+                ]);
+            }
+        }
+    }, [user]);
 
     async function changefile(e) {
         if (e.target.files) {
@@ -53,6 +69,21 @@ function File() {
         }
     }
 
+    async function signout() {
+        try {
+            const res= api.get('/signout')
+            toast.promise(res,{
+                loading: 'Please wait a moment.',
+                success: 'Logged out successfully',
+                error: 'Something went wrong'
+            })
+            userCon.setUser(0)
+            navigate('/')
+        } catch (error) {
+            toast.error('Something went wrong')
+        }
+    }
+
     return (
         <div>
             <div className={mystyle.filenav}>
@@ -61,7 +92,7 @@ function File() {
                     <div className={mystyle.key}>Key: {user.key}</div>
                 </div>
                 <div className={mystyle.logbox}>
-                    <button>
+                    <button onClick={signout}>
                         <CiLogout />
                         Logout
                     </button>
@@ -106,25 +137,55 @@ function File() {
                         {user.docNames && user.docNames.length} file
                     </div>
                     <div className={mystyle.cardbox}>
-                        {user.docNames &&
-                            user.docNames.map((element) => {
-                                return (
-                                    <div className={mystyle.card}>
-                                        <div className={mystyle.fileiconbox}>
-                                            <CiFileOn />
-                                        </div>
-                                        <div className={mystyle.cardCon}>
-                                            {element}
-                                        </div>
-                                        <div className={mystyle.downiconbox}>
-                                            <BsDownload />
-                                        </div>
-                                        <div className={mystyle.deleteiconbox}>
-                                            <RiDeleteBin6Line />
-                                        </div>
+                        {uploadFile.map((element) => {
+                            return (
+                                <div className={mystyle.card}>
+                                    <div className={mystyle.fileiconbox}>
+                                        <CiFileOn />
                                     </div>
-                                );
-                            })}
+                                    <div className={mystyle.cardCon}>
+                                        {element.name}
+                                    </div>
+                                    <div className={mystyle.downiconbox}>
+                                        <a href={element.url} target="_blank">
+                                            <BsDownload />
+                                        </a>
+                                    </div>
+                                    <div className={mystyle.deleteiconbox}>
+                                        <button
+                                            onClick={async () => {
+                                                try {
+                                                    const res = api.post(
+                                                        '/del',
+                                                        element,
+                                                        {
+                                                            headers: {
+                                                                authorization: `bearer ${user.authToken}`,
+                                                            },
+                                                        }
+                                                    );
+                                                    toast.promise(res, {
+                                                        loading:
+                                                            'Please wait a moment.',
+                                                        success:
+                                                            'Image deleted successfully',
+                                                        error: 'Something went wrong',
+                                                        description:
+                                                            'We’re removing the image now.',
+                                                    });
+                                                } catch (error) {
+                                                    toast.error(
+                                                        'Something went wrong'
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            <RiDeleteBin6Line />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             )}

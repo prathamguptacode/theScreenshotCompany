@@ -1,0 +1,432 @@
+.filenav {
+    display: flex;
+    align-items: center;
+    padding: 24px 0;
+    color: #000;
+}
+.logbox {
+    margin-left: auto;
+}
+.Title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #050b10;
+    letter-spacing: -0.02em;
+    cursor: default;
+}
+.key {
+    color: #5f6b73;
+    font-size: 16px;
+    padding: 0 4px;
+}
+
+/* ai css */
+.logbtn {
+    /* Layout & Sizing */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+
+    /* Aesthetics */
+    background-color: #fafcfd; /* Very light gray/blue */
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+
+    /* Animation Base */
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+/* Hover State: Slight darkening and shadow */
+.logbtn:hover {
+    background-color: #ecf3f9;
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Active State: The "Pressed" effect */
+.logbtn:active {
+    transform: scale(0.96); /* Subtle shrink */
+    background-color: #cbd5e1;
+}
+
+/* Focus State: For accessibility */
+.logbtn:focus-visible {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0070f3;
+}
+
+.logbtn:hover .logicon {
+    /* Moves the icon 4px to the right */
+    transform: translateX(4px);
+}
+
+.logicon {
+    transition: transform 0.2s ease-in-out;
+}
+
+.uploadBox {
+    border: 2px dashed #e2e8f0;
+    border-radius: 28px;
+    padding: 60px;
+    text-align: center;
+    background: #fff;
+    margin: 32px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 8px; */
+    height: 360px;
+    transition: background-color 0.25s ease;
+    transition: border 0.25s ease;
+}
+.uploadBox:hover {
+    background-color: rgba(234, 244, 251, 0.25);
+    border: 2px dashed rgba(0, 120, 206, 0.4);
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    height: 60px;
+    aspect-ratio: 2;
+    border-bottom: 3px solid #0000;
+    background: linear-gradient(90deg, #524656 50%, #0000 0) -25% 100%/50% 3px repeat-x
+        border-box;
+    position: relative;
+    animation: l3-0 0.75s linear infinite;
+}
+.loader:before {
+    content: '';
+    position: absolute;
+    inset: auto 42.5% 0;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #0079ce;
+    animation: l3-1 0.75s cubic-bezier(0, 900, 1, 900) infinite;
+}
+@keyframes l3-0 {
+    to {
+        background-position: -125% 100%;
+    }
+}
+@keyframes l3-1 {
+    0%,
+    2% {
+        bottom: 0%;
+    }
+    98%,
+    to {
+        bottom: 0.1%;
+    }
+}
+
+.uploadicon {
+    background: #eff6ff; /* Light blue */
+    color: #3b82f6;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 12px;
+}
+
+.uploadtitle {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.uploadcontent {
+    font-size: 16px;
+    color: oklch(0.52 0.02 240);
+}
+
+.inbx {
+    padding: 24px;
+}
+.inbxlabel {
+    background-color: hsl(217, 91%, 55%);
+    padding: 12px 16px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.inbxlabel:hover {
+    background-color: #3b82f6;
+    /* background-color: #161d28; */
+}
+.inbxlabel:focus-visible {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0070f3;
+}
+/* .inbxlabel:hover .inslabel{
+    transform: translateX(4px);
+} */
+
+.inslabel {
+    display: inline-flex;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        rotate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover: subtle lift + playful motion */
+.inbxlabel:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.inbxlabel:hover .inslabel {
+    transform: translateX(6px) scale(1.1);
+    rotate: -8deg;
+}
+
+/* Active (click) feedback */
+.inbxlabel:active {
+    transform: scale(0.98);
+}
+
+.inbxlabel:active .inslabel {
+    transform: translateX(3px) scale(0.95);
+    rotate: 0deg;
+}
+
+.inbtn {
+    all: unset;
+    display: none;
+}
+
+.filenum {
+    font-size: 14px;
+    color: oklch(0.52 0.02 240);
+}
+
+.cardbox {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ai calss */
+/* Card container */
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 18px;
+    /* padding: 20px 28px; */
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease;
+}
+
+/* Hover lift */
+.card:hover {
+    transform: translateY(-2px) scale(1.01);
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08),
+        0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+/* Left section */
+.file-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* File icon */
+.fileiconbox {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #e0f2fe;
+    display: grid;
+    place-items: center;
+
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        rotate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Icon playful motion */
+.card:hover .fileiconbox {
+    transform: scale(1.12);
+}
+
+/* File name */
+.cardCon {
+    font-weight: 500;
+    color: #0f172a;
+
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    cursor: default
+}
+
+/* File size */
+.file-size {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Right actions */
+.downiconbox {
+    /* display: flex;
+    gap: 10px; */
+    margin-left: auto;
+}
+
+/* Action buttons */
+.downLoadiconbox {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: grid;
+    place-items: center;
+
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.2s ease;
+}
+
+/* Hover on action */
+.downLoadiconbox:hover {
+    background: #f1f5f9;
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+/* Active click feedback */
+.downLoadiconbox:active {
+    transform: scale(0.95);
+}
+
+/* delete btn ai */
+/* Delete button base */
+.deletebtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: grid;
+    place-items: center;
+
+    color: #ef4444;
+
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover: warning but soft */
+.deletebtn:hover {
+    background: rgba(239, 68, 68, 0.08);
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.12);
+}
+
+/* Icon motion */
+.delicon {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deletebtn:hover .delicon {
+    transform: scale(1.1);
+}
+
+/* Active (click) */
+.deletebtn:active {
+    transform: scale(0.92);
+    box-shadow: none;
+}
+
+/* Optional: focus for keyboard users */
+.deletebtn:focus-visible {
+    outline: 2px solid rgba(239, 68, 68, 0.4);
+    outline-offset: 2px;
+}
+
+/* .primarybtn {
+    background: #0070f3;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.primarybtn:hover {
+    background: #0061d5;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.file-item {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color 0.2s;
+}
+
+.file-item:hover {
+    border-color: #cbd5e1;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.file-name {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.file-size {
+    color: #666;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.actions {
+    display: flex;
+    gap: 16px;
+    color: #666;
+}
+
+.actions svg:hover {
+    color: #000;
+    cursor: pointer;
+} */

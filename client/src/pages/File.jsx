@@ -10,6 +10,9 @@ import { BsDownload } from 'react-icons/bs';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import api from '../api/axios';
 import { toast } from 'sonner';
+import { IoIosLogOut } from 'react-icons/io';
+import { MdOutlineLogout } from 'react-icons/md';
+import { FiUpload } from 'react-icons/fi';
 
 function File() {
     const userCon = useContext(UserContext);
@@ -103,8 +106,8 @@ function File() {
                     <div className={mystyle.key}>Key: {user.key}</div>
                 </div>
                 <div className={mystyle.logbox}>
-                    <button onClick={signout}>
-                        <CiLogout />
+                    <button onClick={signout} className={mystyle.logbtn}>
+                        <MdOutlineLogout className={mystyle.logicon} />
                         Logout
                     </button>
                 </div>
@@ -112,24 +115,36 @@ function File() {
 
             <div className={mystyle.uploadBox}>
                 {uploadSt ? (
-                    <div> css loader </div>
+                    <div className={mystyle.loader}></div>
                 ) : (
-                    <div>
+                    <>
                         <div className={mystyle.uploadicon}>
-                            <LuUpload />
+                            <LuUpload size={32} />
                         </div>
                         <div className={mystyle.uploadtitle}>Upload Files</div>
                         <div className={mystyle.uploadcontent}>
                             Drag and drop files here, or click to browse
                         </div>
-                        <div className={mystyle.uploadin}>
+                        <div className={mystyle.inbx}>
+                            <label
+                                htmlFor="inbxFile"
+                                className={mystyle.inbxlabel}
+                            >
+                                <span>Choose File</span>
+                                <FiUpload
+                                    size={18}
+                                    className={mystyle.inslabel}
+                                />
+                            </label>
                             <input
                                 type="file"
                                 name="file"
                                 onChange={changefile}
+                                className={mystyle.inbtn}
+                                id="inbxFile"
                             />
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
 
@@ -144,9 +159,15 @@ function File() {
                 </div>
             ) : (
                 <div className={mystyle.filesShowbox}>
-                    <div className={mystyle.filenum}>
-                        {uploadFile.length} file
-                    </div>
+                    {uploadFile.length > 1 ? (
+                        <div className={mystyle.filenum}>
+                            {uploadFile.length} files
+                        </div>
+                    ) : (
+                        <div className={mystyle.filenum}>
+                            {uploadFile.length} file
+                        </div>
+                    )}
                     <div className={mystyle.cardbox}>
                         {uploadFile.map((element) => {
                             return (
@@ -159,6 +180,7 @@ function File() {
                                     </div>
                                     <div className={mystyle.downiconbox}>
                                         <button
+                                            className={mystyle.downLoadiconbox}
                                             onClick={() => {
                                                 const downUrl =
                                                     element.url.replace(
@@ -180,6 +202,7 @@ function File() {
                                     </div>
                                     <div className={mystyle.deleteiconbox}>
                                         <button
+                                            className={mystyle.deletebtn}
                                             onClick={async () => {
                                                 try {
                                                     const res = api.post(
@@ -208,7 +231,7 @@ function File() {
                                                 }
                                             }}
                                         >
-                                            <RiDeleteBin6Line />
+                                            <RiDeleteBin6Line className={mystyle.delicon} />
                                         </button>
                                     </div>
                                 </div>

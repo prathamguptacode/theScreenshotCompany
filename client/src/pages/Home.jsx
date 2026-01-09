@@ -48,7 +48,7 @@ function Home() {
             const res = api.post('/user', body);
             toast.promise(res, {
                 loading: 'Please wait while we connect to the server.',
-                success: 'Connection established',
+                success: 'Logged in successfully',
                 error: 'Refresh or try again shortly',
                 duration: 1000,
             });

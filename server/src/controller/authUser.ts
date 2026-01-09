@@ -64,7 +64,7 @@ async function authUser(req: Request, res: Response) {
                 //sending cookies to stay signed in
                 if (process.env.TOKENKEY) {
                     const token = jwt.sign({ user: key }, process.env.TOKENKEY);
-                    res.cookie('userToken', token, { httpOnly: true });
+                    res.cookie('userToken', token, { httpOnly: true , secure: true , sameSite: 'none' });
                 } else {
                     console.error('something went wrong jwt keys not found');
                 }
@@ -86,7 +86,7 @@ async function authUser(req: Request, res: Response) {
             //sending cookies to stay signed in
             if (process.env.TOKENKEY) {
                 const token = jwt.sign({ user: key }, process.env.TOKENKEY);
-                res.cookie('userToken', token, { httpOnly: true });
+                res.cookie('userToken', token, { httpOnly: true , secure: true , sameSite: 'none' });
             } else {
                 console.error('something went wrong jwt keys not found');
             }

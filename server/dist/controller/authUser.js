@@ -9,7 +9,8 @@ async function authUser(req, res) {
             try {
                 const userVal = jwt.verify(tokenC, process.env.TOKENKEY);
                 key = userVal.user;
-            } catch (error) {
+            }
+            catch (error) {
                 console.log('invalid token ');
             }
         }
@@ -44,17 +45,15 @@ async function authUser(req, res) {
                 //sending cookies to stay signed in
                 if (process.env.TOKENKEY) {
                     const token = jwt.sign({ user: key }, process.env.TOKENKEY);
-                    res.cookie('userToken', token, {
-                        httpOnly: true,
-                        secure: true, // Only sent over HTTPS
-                        sameSite: 'none',
-                    });
-                } else {
+                    res.cookie('userToken', token, { httpOnly: true, secure: true, sameSite: 'none' });
+                }
+                else {
                     console.error('something went wrong jwt keys not found');
                 }
             }
             return res.json(clientRes);
-        } else {
+        }
+        else {
             console.error('something went wrong jwt keys not found');
         }
     }
@@ -63,12 +62,9 @@ async function authUser(req, res) {
             //sending cookies to stay signed in
             if (process.env.TOKENKEY) {
                 const token = jwt.sign({ user: key }, process.env.TOKENKEY);
-                res.cookie('userToken', token, {
-                    httpOnly: true,
-                    secure: true, // Only sent over HTTPS
-                    sameSite: 'none',
-                });
-            } else {
+                res.cookie('userToken', token, { httpOnly: true, secure: true, sameSite: 'none' });
+            }
+            else {
                 console.error('something went wrong jwt keys not found');
             }
         }
@@ -85,7 +81,8 @@ async function authUser(req, res) {
                 key: key,
             };
             return res.json(clientRes);
-        } else {
+        }
+        else {
             console.error('something went wrong jwt keys not found');
         }
     }

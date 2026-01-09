@@ -12,7 +12,7 @@ router.post('/user', authUser);
 router.post('/upload', upload.single('file'), uploadCon);
 
 router.get('/signout',(req: Request,res: Response)=>{
-    res.clearCookie('userToken');
+    res.clearCookie('userToken',{sameSite: 'none', secure: true});
     const clientRes: clientResponse={message: 'user signed out', mission: "success"}
     res.json(clientRes)
 })

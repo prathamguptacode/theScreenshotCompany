@@ -13,8 +13,7 @@ function Home() {
     const [sign, setSign] = useState(false);
     const key = useRef();
     const navigate = useNavigate();
-    const userCon=useContext(UserContext)
-
+    const userCon = useContext(UserContext);
 
     function handleGen() {
         const length = Math.floor(Math.random() * (12 - 6 + 1)) + 6;
@@ -46,11 +45,21 @@ function Home() {
                 key: val,
                 signCan: sign,
             };
-            const res = await api.post('/user', body);
-            console.log(res);
-            if (res.status == 200) {
-                userCon.setUser({serverData: res.data})
-                navigate('/files');
+            const res = api.post('/user', body);
+            toast.promise(res, {
+                loading: 'Please wait while we connect to the server.',
+                success: 'Connection established',
+                error: 'Refresh or try again shortly',
+                duration: 1000,
+            });
+            try {
+                const resData = await res;
+                if (resData.status == 200) {
+                    userCon.setUser({ serverData: resData.data });
+                    navigate('/files');
+                }
+            } catch (error) {
+                toast.error('something went wrong');
             }
         }
     }
@@ -84,20 +93,31 @@ function Home() {
         );
 
         (async () => {
-            const res = await api.get('/');
-            const style = 'font-size: 28px; font-weight: 700;';
-            console.log(`%c${res.data.message}`, style);
-            const stylePg = 'font-size: 20px; font-weight: 500;';
-            console.log(
-                `%cthis company is made by Pratham Gupta with love`,
-                stylePg
-            );
+            const resSer = api.get('/');
+            toast.promise(resSer, {
+                loading: 'Please wait while we connect to the server.',
+                success: 'Connection established',
+                error: 'Refresh or try again shortly',
+                duration: 1000,
+            });
+            try {
+                const res = await resSer;
+                const style = 'font-size: 28px; font-weight: 700;';
+                console.log(`%c${res.data.message}`, style);
+                const stylePg = 'font-size: 20px; font-weight: 500;';
+                console.log(
+                    `%cthis company is made by Pratham Gupta with love`,
+                    stylePg
+                );
+            } catch (error) {
+                toast.error('Something went wrong', {
+                    description: 'Please try again later',
+                });
+            }
 
-            console.log(res);
             const resApi = await api.post('/user');
-            console.log(resApi);
             if (resApi.status == 200) {
-                userCon.setUser({serverData: resApi.data})
+                userCon.setUser({ serverData: resApi.data });
                 navigate('/files');
             }
         })();

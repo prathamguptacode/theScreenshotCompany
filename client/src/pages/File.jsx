@@ -44,11 +44,8 @@ function File() {
         }
     }, [user]);
 
-    console.log(uploadFile);
-
     async function changefile(e) {
         if (e.target.files) {
-            console.log(e.target.files[0]);
             setUploadSt(1);
             const formData = new FormData();
             formData.append('file', e.target.files[0]);
@@ -110,7 +107,6 @@ function File() {
     async function handleDrop(e) {
         e.preventDefault();
         if (e.dataTransfer.files) {
-            console.log(e.dataTransfer.files[0]);
             setUploadSt(1);
             const formData = new FormData();
             formData.append('file', e.dataTransfer.files[0]);

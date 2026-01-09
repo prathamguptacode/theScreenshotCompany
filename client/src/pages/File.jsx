@@ -89,8 +89,10 @@ function File() {
                 success: 'Logged out successfully',
                 error: 'Something went wrong',
             });
-            userCon.setUser(0);
-            navigate('/');
+            res.then(()=>{
+                userCon.setUser(0);
+                navigate('/');
+            })
         } catch (error) {
             toast.error('Something went wrong');
         }

@@ -47,8 +47,11 @@ function File() {
     async function changefile(e) {
         if (e.target.files) {
             setUploadSt(1);
+            const files = e.target.files;
             const formData = new FormData();
-            formData.append('file', e.target.files[0]);
+            for (let i = 0; i < files.length; i++) {
+                formData.append('file', files[i]);
+            }
             try {
                 const res = await api.post('/upload', formData, {
                     headers: {
@@ -56,14 +59,21 @@ function File() {
                     },
                 });
                 const info = res.data.info;
-                setUploadFile((prev) => [
-                    { name: info.docName, url: info.documents },
-                    ...prev,
-                ]);
+                console.log(info);
+                for (let index = 0; index < info.docName.length; index++) {
+                    setUploadFile((prev) => [
+                        {
+                            name: info.docName[index],
+                            url: info.documents[index],
+                        },
+                        ...prev,
+                    ]);
+                }
                 toast.success('Files uploaded successfully', {
                     description: "You'll need your key to access your files.",
                 });
             } catch (error) {
+                console.log(error);
                 if (error.response.status == 401) {
                     toast.error('Upload interrupted', {
                         description:
@@ -86,10 +96,10 @@ function File() {
                 success: 'Logged out successfully',
                 error: 'Something went wrong',
             });
-            res.then(()=>{
+            res.then(() => {
                 userCon.setUser(0);
                 navigate('/');
-            })
+            });
         } catch (error) {
             toast.error('Something went wrong');
         }
@@ -108,8 +118,11 @@ function File() {
         e.preventDefault();
         if (e.dataTransfer.files) {
             setUploadSt(1);
+            const files = e.dataTransfer.files;
             const formData = new FormData();
-            formData.append('file', e.dataTransfer.files[0]);
+            for (let i = 0; i < files.length; i++) {
+                formData.append('file', files[i]);
+            }
             try {
                 const res = await api.post('/upload', formData, {
                     headers: {
@@ -117,14 +130,21 @@ function File() {
                     },
                 });
                 const info = res.data.info;
-                setUploadFile((prev) => [
-                    { name: info.docName, url: info.documents },
-                    ...prev,
-                ]);
+                console.log(info);
+                for (let index = 0; index < info.docName.length; index++) {
+                    setUploadFile((prev) => [
+                        {
+                            name: info.docName[index],
+                            url: info.documents[index],
+                        },
+                        ...prev,
+                    ]);
+                }
                 toast.success('Files uploaded successfully', {
                     description: "You'll need your key to access your files.",
                 });
             } catch (error) {
+                console.log(error);
                 if (error.response.status == 401) {
                     toast.error('Upload interrupted', {
                         description:
@@ -187,6 +207,7 @@ function File() {
                                 onChange={changefile}
                                 className={mystyle.inbtn}
                                 id="inbxFile"
+                                multiple
                             />
                         </div>
                     </>
@@ -230,11 +251,11 @@ function File() {
                                                 const downUrl =
                                                     element.url.replace(
                                                         '/upload/',
-                                                        '/upload/fl_attachment/'
+                                                        '/upload/fl_attachment/',
                                                     );
                                                 toast.success(
                                                     'Please wait, your download will start shortly…',
-                                                    { duration: 1200 }
+                                                    { duration: 1200 },
                                                 );
                                                 setTimeout(() => {
                                                     window.location.href =
@@ -257,7 +278,7 @@ function File() {
                                                             headers: {
                                                                 authorization: `bearer ${user.authToken}`,
                                                             },
-                                                        }
+                                                        },
                                                     );
                                                     toast.promise(res, {
                                                         loading:
@@ -271,7 +292,7 @@ function File() {
                                                     delCard(element.name);
                                                 } catch (error) {
                                                     toast.error(
-                                                        'Something went wrong'
+                                                        'Something went wrong',
                                                     );
                                                 }
                                             }}

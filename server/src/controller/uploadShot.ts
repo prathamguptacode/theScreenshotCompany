@@ -46,6 +46,7 @@ const uploadCon = async (req: Request, res: Response) => {
     }
     if (req.files && Array.isArray(req.files) && req.files?.length > 0) {
         const imgDataAr: UploadApiResponse[] = [];
+        let flag = 1;
         for (const file of req.files) {
             if (file.path) {
                 try {
@@ -69,6 +70,7 @@ const uploadCon = async (req: Request, res: Response) => {
                         }
                     });
                 } catch (error) {
+                    flag = 0;
                     console.log(error);
                     const cleintRes: clientResponse = {
                         message: 'failed to upload the files...',
@@ -77,6 +79,7 @@ const uploadCon = async (req: Request, res: Response) => {
                     return res.json(cleintRes);
                 }
             } else {
+                flag = 0;
                 const cleintRes: clientResponse = {
                     message: 'failed to upload the files',
                     mission: 'failed',
@@ -84,23 +87,25 @@ const uploadCon = async (req: Request, res: Response) => {
                 return res.json(cleintRes);
             }
         }
-        interface uploadResponse extends clientResponse {
-            info: {
-                docName: string[];
-                documents: string[];
+        if (flag) {
+            interface uploadResponse extends clientResponse {
+                info: {
+                    docName: string[];
+                    documents: string[];
+                };
+            }
+            const imgDataOrg = imgDataAr.map((e) => e.original_filename);
+            const imgDataUrl = imgDataAr.map((e) => e.secure_url);
+            const cleintRes: uploadResponse = {
+                message: 'file uploaded successfully',
+                mission: 'success',
+                info: {
+                    docName: imgDataOrg,
+                    documents: imgDataUrl,
+                },
             };
+            return res.json(cleintRes);
         }
-        const imgDataOrg = imgDataAr.map((e) => e.original_filename);
-        const imgDataUrl = imgDataAr.map((e) => e.secure_url);
-        const cleintRes: uploadResponse = {
-            message: 'file uploaded successfully',
-            mission: 'success',
-            info: {
-                docName: imgDataOrg,
-                documents: imgDataUrl,
-            },
-        };
-        return res.json(cleintRes);
     } else {
         return res
             .json(400)

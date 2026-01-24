@@ -6,6 +6,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import type { JwtPayload } from 'jsonwebtoken';
 import dbuser from '../model/userSchema.js';
+import type { UploadApiResponse } from 'cloudinary';
 
 const uploadCon = async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
@@ -19,7 +20,7 @@ const uploadCon = async (req: Request, res: Response) => {
             try {
                 const userT = jwt.verify(
                     token,
-                    process.env.ACTOKENKEY
+                    process.env.ACTOKENKEY,
                 ) as myToken;
                 user = userT.user;
             } catch (error) {
@@ -43,57 +44,67 @@ const uploadCon = async (req: Request, res: Response) => {
         };
         return res.status(401).json(cleintRes);
     }
-
-    if (req.file?.path) {
-        try {
-            const imgData = await cloudinary.uploader.upload(
-                req.file?.path,
-                options
-            );
-            console.log(imgData);
-            await dbuser.updateOne(
-                { key: user },
-                {
-                    $push: {
-                        docName: imgData.original_filename,
-                        documents: imgData.secure_url,
-                    },
+    if (req.files && Array.isArray(req.files) && req.files?.length > 0) {
+        const imgDataAr: UploadApiResponse[] = [];
+        for (const file of req.files) {
+            if (file.path) {
+                try {
+                    const imgData = await cloudinary.uploader.upload(
+                        file?.path,
+                        options,
+                    );
+                    imgDataAr.push(imgData);
+                    await dbuser.updateOne(
+                        { key: user },
+                        {
+                            $push: {
+                                docName: imgData.original_filename,
+                                documents: imgData.secure_url,
+                            },
+                        },
+                    );
+                    fs.unlink(file?.path, (err) => {
+                        if (err) {
+                            console.log('cannot delete the file');
+                        }
+                    });
+                } catch (error) {
+                    console.log(error);
+                    const cleintRes: clientResponse = {
+                        message: 'failed to upload the files...',
+                        mission: 'failed',
+                    };
+                    return res.json(cleintRes);
                 }
-            );
-            interface uploadResponse extends clientResponse {
-                info: {
-                    docName: string;
-                    documents: string;
+            } else {
+                const cleintRes: clientResponse = {
+                    message: 'failed to upload the files',
+                    mission: 'failed',
                 };
+                return res.json(cleintRes);
             }
-            const cleintRes: uploadResponse = {
-                message: 'file uploaded successfully',
-                mission: 'success',
-                info: {
-                    docName: imgData.original_filename,
-                    documents: imgData.secure_url,
-                },
-            };
-            fs.unlink(req.file?.path, (err) => {
-                if (err) {
-                    console.log('cannot delete the file');
-                }
-            });
-            return res.json(cleintRes);
-        } catch (error) {
-            console.log(error);
-            const cleintRes: clientResponse = {
-                message: 'failed to upload the files...',
-                mission: 'failed',
-            };
-            return res.json(cleintRes);
         }
-    } else {
-        const cleintRes: clientResponse = {
-            message: 'failed to upload the files',
-            mission: 'failed',
+        interface uploadResponse extends clientResponse {
+            info: {
+                docName: string[];
+                documents: string[];
+            };
+        }
+        const imgDataOrg = imgDataAr.map((e) => e.original_filename);
+        const imgDataUrl = imgDataAr.map((e) => e.secure_url);
+        const cleintRes: uploadResponse = {
+            message: 'file uploaded successfully',
+            mission: 'success',
+            info: {
+                docName: imgDataOrg,
+                documents: imgDataUrl,
+            },
         };
         return res.json(cleintRes);
+    } else {
+        return res
+            .json(400)
+            .json({ message: 'something went wrong', mission: 'failed' });
     }
 };
 

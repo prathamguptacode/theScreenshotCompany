@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/user', authUser);
 
-router.post('/upload', upload.single('file'), uploadCon);
+router.post('/upload', upload.array('file'), uploadCon);
 
 router.get('/signout',(req: Request,res: Response)=>{
     res.clearCookie('userToken',{sameSite: 'none', secure: true});

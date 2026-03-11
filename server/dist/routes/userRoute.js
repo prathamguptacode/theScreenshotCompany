@@ -5,9 +5,9 @@ import uploadCon from '../controller/uploadShot.js';
 import deleteShot from '../controller/deleteShot.js';
 const router = express.Router();
 router.post('/user', authUser);
-router.post('/upload', upload.single('file'), uploadCon);
+router.post('/upload', upload.array('file'), uploadCon);
 router.get('/signout', (req, res) => {
-    res.clearCookie('userToken');
+    res.clearCookie('userToken', { sameSite: 'none', secure: true });
     const clientRes = { message: 'user signed out', mission: "success" };
     res.json(clientRes);
 });

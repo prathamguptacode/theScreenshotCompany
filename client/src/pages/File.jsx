@@ -100,7 +100,7 @@ function File() {
                 userCon.setUser(0);
                 navigate('/');
             });
-        } catch (error) {
+        } catch {
             toast.error('Something went wrong');
         }
     }
@@ -290,7 +290,7 @@ function File() {
                                                             'We’re removing the image now.',
                                                     });
                                                     delCard(element.name);
-                                                } catch (error) {
+                                                } catch{
                                                     toast.error(
                                                         'Something went wrong',
                                                     );

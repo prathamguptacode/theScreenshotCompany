@@ -58,7 +58,7 @@ function Home() {
                     userCon.setUser({ serverData: resData.data });
                     navigate('/files');
                 }
-            } catch (error) {
+            } catch {
                 toast.error('something went wrong');
             }
         }
@@ -109,7 +109,7 @@ function Home() {
                     `%cthis company is made by Pratham Gupta with love`,
                     stylePg
                 );
-            } catch (error) {
+            } catch {
                 toast.error('Something went wrong', {
                     description: 'Please try again later',
                 });

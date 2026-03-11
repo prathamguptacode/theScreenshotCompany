@@ -36,46 +36,63 @@ const uploadCon = async (req, res) => {
         };
         return res.status(401).json(cleintRes);
     }
-    if (req.file?.path) {
-        try {
-            const imgData = await cloudinary.uploader.upload(req.file?.path, options);
-            console.log(imgData);
-            await dbuser.updateOne({ key: user }, {
-                $push: {
-                    docName: imgData.original_filename,
-                    documents: imgData.secure_url,
-                },
-            });
+    if (req.files && Array.isArray(req.files) && req.files?.length > 0) {
+        const imgDataAr = [];
+        let flag = 1;
+        for (const file of req.files) {
+            if (file.path) {
+                try {
+                    const imgData = await cloudinary.uploader.upload(file?.path, options);
+                    imgDataAr.push(imgData);
+                    await dbuser.updateOne({ key: user }, {
+                        $push: {
+                            docName: imgData.original_filename,
+                            documents: imgData.secure_url,
+                        },
+                    });
+                    fs.unlink(file?.path, (err) => {
+                        if (err) {
+                            console.log('cannot delete the file');
+                        }
+                    });
+                }
+                catch (error) {
+                    flag = 0;
+                    console.log(error);
+                    const cleintRes = {
+                        message: 'failed to upload the files...',
+                        mission: 'failed',
+                    };
+                    return res.json(cleintRes);
+                }
+            }
+            else {
+                flag = 0;
+                const cleintRes = {
+                    message: 'failed to upload the files',
+                    mission: 'failed',
+                };
+                return res.json(cleintRes);
+            }
+        }
+        if (flag) {
+            const imgDataOrg = imgDataAr.map((e) => e.original_filename);
+            const imgDataUrl = imgDataAr.map((e) => e.secure_url);
             const cleintRes = {
                 message: 'file uploaded successfully',
                 mission: 'success',
                 info: {
-                    docName: imgData.original_filename,
-                    documents: imgData.secure_url,
+                    docName: imgDataOrg,
+                    documents: imgDataUrl,
                 },
-            };
-            fs.unlink(req.file?.path, (err) => {
-                if (err) {
-                    console.log('cannot delete the file');
-                }
-            });
-            return res.json(cleintRes);
-        }
-        catch (error) {
-            console.log(error);
-            const cleintRes = {
-                message: 'failed to upload the files...',
-                mission: 'failed',
             };
             return res.json(cleintRes);
         }
     }
     else {
-        const cleintRes = {
-            message: 'failed to upload the files',
-            mission: 'failed',
-        };
-        return res.json(cleintRes);
+        return res
+            .json(400)
+            .json({ message: 'something went wrong', mission: 'failed' });
     }
 };
 export default uploadCon;
